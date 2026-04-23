@@ -1,4 +1,6 @@
-package br.com.fluxoalpha.desafio_webhook_processor.domain;
+package br.com.fluxoalpha.desafio_webhook_processor.domain.model;
+
+import br.com.fluxoalpha.desafio_webhook_processor.domain.exception.LeadInvalidException;
 
 public class Lead {
 
@@ -8,6 +10,7 @@ public class Lead {
     private String campaign;
     private String status;
 
+    // Construtor Completo (Usado quando buscamos do banco de dados, por exemplo)
     public Lead(String name, String phoneNumber, String email, String campaign, String status) {
         this.name = nameValidation(name);
         this.phoneNumber = phoneNumberValidation(phoneNumber);
@@ -16,27 +19,32 @@ public class Lead {
         this.status = status;
     }
 
+    // NOVO Construtor: Feito para quando o Lead acabou de chegar do Webhook
+    public Lead(String name, String phoneNumber, String email, String campaign) {
+        this(name, phoneNumber, email, campaign, "RECEBIDO");
+    }
+
     // validations
     private String emailValidation(String email){
         if(email == null || email.trim().isEmpty()){
-            throw new IllegalArgumentException("O email não pode ser vazio!");
+            throw new LeadInvalidException("O email não pode ser vazio!");
         }
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Formato de email inválido.");
+            throw new LeadInvalidException("Formato de email inválido.");
         }
         return email;
     }
 
     private String phoneNumberValidation(String phoneNumber){
         if (phoneNumber == null || phoneNumber.length() < 10){
-            throw new IllegalArgumentException("Telefone deve ter DDD e número.");
+            throw new LeadInvalidException("Telefone deve ter DDD e número.");
         }
         return phoneNumber;
     }
 
     private String nameValidation(String name){
         if (name == null || name.trim().isEmpty()){
-            throw new IllegalArgumentException("O nome não pode ser vazio!");
+            throw new LeadInvalidException("O nome não pode ser vazio!");
         }
         return name;
     }
