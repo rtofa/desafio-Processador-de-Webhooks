@@ -12,5 +12,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine # O '-management' traz o painel visual!
+    container_name: fluxoalpha-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: adminpassword
+    ports:
+    - "5672:5672"   # Porta de comunicação com o Spring Boot
+    - "15672:15672" # Porta do painel visual no navegador
+
 volumes:
   postgres_data:
