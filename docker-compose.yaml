@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: adminpassword
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -19,8 +19,8 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: adminpassword
     ports:
-    - "5672:5672"   # Porta de comunicação com o Spring Boot
-    - "15672:15672" # Porta do painel visual no navegador
+    - "5673:5672"   # Porta de comunicação com o Spring Boot
+    - "15673:15672" # Porta do painel visual no navegador
 
 volumes:
   postgres_data:
